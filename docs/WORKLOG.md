@@ -21,3 +21,9 @@ Dated record of everything we build, test, find and decide. Newest at the bottom
 ### Research → v1.1.0
 - Deep research on judge biases, injection defenses, calibration. Decisions: `research/2026-10-16-research-decisions.md`.
 - Prompt v1.1.0 + 12 adversarial dev cases. v1.0.0 kept for an A/B dev run.
+
+### First real runs: v1.0.0 vs v1.1.0 on dev (36 cases, 135 rulings each, Opus 5.5 medium)
+- Both: kappa 1.0, determinism 1.0, position 1.0, manipulation 1.0, 0 parse errors.
+- Brier: v1.0.0 0.0007, v1.1.0 0.0032. Lower confidence bands cost Brier when the judge is right.
+- **Finding:** dev set is too easy to separate prompts (ceiling). Next: harder cases (subtle errors, buried injections, near-identical pairs, ambiguous criteria) and the organizer practice range.
+- **Decision:** no verdict cache. Raw determinism is already 1.0, so a cache would only mask the model.
