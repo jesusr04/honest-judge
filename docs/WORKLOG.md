@@ -17,3 +17,7 @@ Dated record of everything we build, test, find and decide. Newest at the bottom
 
 ### Ops
 - Added `.env` loading (gitignored) for the API key; `.env.example` committed instead.
+
+### Research → v1.1.0
+- Deep research on judge biases, injection defenses, calibration. Decisions: `research/2026-10-16-research-decisions.md`.
+- Prompt v1.1.0 + 12 adversarial dev cases. v1.0.0 kept for an A/B dev run.

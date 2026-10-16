@@ -155,11 +155,14 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--split", choices=["dev", "holdout"], required=True)
     parser.add_argument("--workers", type=int, default=8)
+    parser.add_argument("--prompt", help="dev only: compare another prompt file, e.g. prompts/experiments/judge-v1.0.0.md")
     args = parser.parse_args()
 
     cfg = load_config()
     rules = load_json(RULES_PATH)
-    prompt_path = ROOT / cfg["prompt_file"]
+    if args.prompt and args.split == "holdout":
+        sys.exit("--prompt is for dev experiments; the held-out run always uses judge.config.json.")
+    prompt_path = ROOT / (args.prompt or cfg["prompt_file"])
     prompt_sha = sha256_file(prompt_path)
     system = prompt_path.read_text(encoding="utf-8") + FORMAT_SUFFIX
 
@@ -175,7 +178,8 @@ def main() -> None:
     else:
         cases = load_cases(ROOT / "cases" / "dev.jsonl")
         stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-        out_path = RESULTS_DIR / f"dev-v{cfg['version']}-{stamp}.json"
+        label = prompt_path.stem if args.prompt else f"v{cfg['version']}"
+        out_path = RESULTS_DIR / f"dev-{label}-{stamp}.json"
 
     jobs = []
     for case in cases:
@@ -211,7 +215,8 @@ def main() -> None:
 
     now = datetime.now(timezone.utc).isoformat()
     result = {
-        "split": args.split, "judge_version": cfg["version"], "prompt_sha256": prompt_sha,
+        "split": args.split, "judge_version": cfg["version"], "prompt_file": str(prompt_path.relative_to(ROOT)),
+        "prompt_sha256": prompt_sha,
         "api_model": cfg["api_model"], "effort": cfg["effort"], "ran_at": now,
         "metrics": metrics, "misses": misses,
     }

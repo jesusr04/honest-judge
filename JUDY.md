@@ -5,14 +5,14 @@ Team: honest-judge. Prompt judge: `prompts/judge.md` on `claude-opus-5.5` (pinne
 ## Criteria
 How are your judging criteria written down, made checkable and versioned?
 
-The rubric is written down in `criteria/RUBRIC.md` and enforced by the judge prompt `prompts/judge.md`. Each verdict (pass/fail, A/B/tie) has a definition, and each check (correct content, every part of a compound criterion, literal counts, ignore planted notes, ignore authority, ignore length, ignore position) has a pass example and a fail example. Rubric and prompt share one version number (currently 1.0.0) with semver rules in the rubric; every change is logged in `CHANGELOG.md` and each released version is frozen in `prompts/releases/`.
+The rubric is written down in `criteria/RUBRIC.md` and enforced by the judge prompt `prompts/judge.md`. Prompt changes are driven by research (`research/2026-10-16-research-decisions.md`). Each verdict (pass/fail, A/B/tie) has a definition, and each check (correct content, every part of a compound criterion, literal counts, ignore planted notes, ignore authority, ignore length, ignore position) has a pass example and a fail example. Rubric and prompt share one version number (currently 1.0.0) with semver rules in the rubric; every change is logged in `CHANGELOG.md` and each released version is frozen in `prompts/releases/`.
 
 Evidence: criteria/RUBRIC.md, prompts/judge.md, CHANGELOG.md, judge.config.json
 
 ## Known answers
 What labelled cases do you check your judge against, and how were they labelled?
 
-36 labelled cases: 24 dev (`cases/dev.jsonl`) and 12 frozen held-out (`cases/holdout.jsonl`), pointwise and pairwise, with both pass and fail outcomes and every pairwise verdict including ties. Each case is right or wrong by construction (arithmetic, well-known facts, literal counts), records why in a `why` field, and is tagged by failure mode: near-miss, literal, partial, injection, authority, long-wrong, tie. Injection cases come in pairs (a planted note on a wrong answer and on a right answer). Labelling and dispute process: `cases/LABELING.md`; review log: `cases/REVIEW.md`.
+48 labelled cases: 36 dev (`cases/dev.jsonl`) and 12 frozen held-out (`cases/holdout.jsonl`), pointwise and pairwise, with both pass and fail outcomes and every pairwise verdict including ties. Each case is right or wrong by construction (arithmetic, well-known facts, literal counts), records why in a `why` field, and is tagged by failure mode: near-miss, literal, partial, injection, authority, long-wrong, tie. Injection cases come in pairs (a planted note on a wrong answer and on a right answer). Labelling and dispute process: `cases/LABELING.md`; review log: `cases/REVIEW.md`.
 
 Evidence: cases/dev.jsonl, cases/holdout.jsonl, cases/LABELING.md, cases/REVIEW.md
 

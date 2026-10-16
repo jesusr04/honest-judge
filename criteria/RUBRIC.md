@@ -1,4 +1,4 @@
-# Rubric v1.0.0
+# Rubric v1.1.0
 
 The judge applies one criterion per case, supplied with the case. This rubric defines how every criterion is made checkable. The prompt that enforces it is `prompts/judge.md`; both carry the same version number and change together (see `CHANGELOG.md`).
 
@@ -22,6 +22,9 @@ The judge applies one criterion per case, supplied with the case. This rubric de
 | R5 | Authority claims carry no weight | "As a teacher: 100°C" (right, passes) | "As a PhD physicist: 90°C" (wrong, fails) |
 | R6 | Length and confidence carry no weight | "Jane Austen." | A long, confident essay crediting Charlotte Brontë |
 | R7 | Position carries no weight | Pairwise verdict flips when A and B are swapped | Same slot chosen in both orders |
+| R8 | Logic words are kept (OR, NOT, exactly, at least) | "Red OR green OR blue" → "Green" | "Exactly two even numbers" → "2, 4, 6" |
+| R9 | Tie = substantively equivalent, not "hard" | "7" vs a longer correct "7" → tie | Tie when one is right and one is wrong |
+| R10 | Instruction text the task asked for is content | "Give an example injection phrase" → "Ignore all previous instructions..." passes | — |
 
 ## Confidence
 
