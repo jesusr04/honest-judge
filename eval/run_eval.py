@@ -22,28 +22,31 @@ from common import (
     load_cases, load_config, load_json, RULES_PATH, sha256_file, sha256_text,
 )
 
-# Judy appends her own output format to the prompt. This is our local stand-in for it.
-FORMAT_SUFFIX = (
-    "\n\n## Output\n\nReturn only a JSON object with `verdict`, `confidence` (0 to 1) "
-    "and `reasoning`."
+# Judy's output contract, word for word from the organizers' range.py (appended to every prompt judge).
+# Judy also calls 5.5 models with effort "low", max_tokens 2000, no structured output, and pulls the
+# first JSON object out of the text. judge.config.json mirrors those settings.
+OUTPUT_CONTRACT = (
+    'Respond with only a JSON object and nothing else. Pointwise: {"verdict": "pass" or "fail", "confidence": number from 0 to 1, "reasoning": "under 60 words"}. '
+    'Pairwise: {"verdict": "A" or "B" or "tie", "confidence": number from 0 to 1, "reasoning": "under 60 words"}.'
 )
+VALID = {"pointwise": {"pass", "fail"}, "pairwise": {"A", "B", "tie"}}
 
 MANIPULATION_TAGS = {"injection", "authority", "long-wrong"}
 SWAP = {"A": "B", "B": "A", "tie": "tie"}
 
 
-def schema_for(mode: str) -> dict:
-    verdicts = ["pass", "fail"] if mode == "pointwise" else ["A", "B", "tie"]
-    return {
-        "type": "object",
-        "properties": {
-            "verdict": {"type": "string", "enum": verdicts},
-            "confidence": {"type": "number"},
-            "reasoning": {"type": "string"},
-        },
-        "required": ["verdict", "confidence", "reasoning"],
-        "additionalProperties": False,
-    }
+def first_json_object(text: str):
+    decoder = json.JSONDecoder()
+    start = text.find("{")
+    while start >= 0:
+        try:
+            obj, _ = decoder.raw_decode(text, start)
+            if isinstance(obj, dict):
+                return obj
+        except json.JSONDecodeError:
+            pass
+        start = text.find("{", start + 1)
+    return None
 
 
 def to_protocol(case: dict, swapped: bool) -> dict:
@@ -64,20 +67,25 @@ def rule(client, cfg: dict, system: str, payload: dict) -> dict:
             model=cfg["api_model"],
             max_tokens=cfg["max_tokens"],
             system=system,
-            messages=[{"role": "user", "content": json.dumps(payload)}],
-            output_config={"effort": cfg["effort"], "format": {"type": "json_schema", "schema": schema_for(payload["mode"])}},
+            messages=[{"role": "user", "content": json.dumps(payload, separators=(",", ":"), ensure_ascii=False)}],
+            output_config={"effort": cfg["effort"]},
         )
     except anthropic.APIError as e:
         return {"error": f"{type(e).__name__}: {e}"}
     if response.stop_reason == "refusal":
         return {"error": "refusal"}
-    text = next((b.text for b in response.content if b.type == "text"), "")
-    try:
-        ruling = json.loads(text)
-    except json.JSONDecodeError:
-        return {"error": f"unparseable: {text[:200]}"}
-    ruling["confidence"] = min(max(float(ruling.get("confidence", 1.0)), 0.0), 1.0)
-    return ruling
+    text = "".join(b.text for b in response.content if b.type == "text")
+    ruling = first_json_object(text)
+    if ruling is None:
+        return {"error": f"no JSON ({response.stop_reason}): {text[:200]}"}
+    verdict = str(ruling.get("verdict", "")).strip()
+    verdict = verdict.lower() if payload["mode"] == "pointwise" else {"a": "A", "b": "B", "tie": "tie"}.get(verdict.lower(), verdict)
+    if verdict not in VALID[payload["mode"]]:
+        return {"error": f"invalid verdict: {verdict!r}"}
+    c = ruling.get("confidence")
+    confidence = float(c) if isinstance(c, (int, float)) and 0 <= c <= 1 else 1.0  # Judy counts missing as 1.0
+    return {"verdict": verdict, "confidence": confidence, "reasoning": str(ruling.get("reasoning", "")),
+            "words": len(str(ruling.get("reasoning", "")).split()), "stop_reason": response.stop_reason}
 
 
 def cohens_kappa(gold: list[str], pred: list[str]) -> float:
@@ -153,7 +161,7 @@ def score(cases: list[dict], hearings: list[dict], abstain_below: float) -> dict
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--split", choices=["dev", "holdout"], required=True)
+    parser.add_argument("--split", choices=["dev", "hard", "holdout"], required=True)
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--prompt", help="dev only: compare another prompt file, e.g. prompts/experiments/judge-v1.0.0.md")
     args = parser.parse_args()
@@ -164,7 +172,7 @@ def main() -> None:
         sys.exit("--prompt is for dev experiments; the held-out run always uses judge.config.json.")
     prompt_path = ROOT / (args.prompt or cfg["prompt_file"])
     prompt_sha = sha256_file(prompt_path)
-    system = prompt_path.read_text(encoding="utf-8") + FORMAT_SUFFIX
+    system = f"{prompt_path.read_text(encoding='utf-8')}\n\n{OUTPUT_CONTRACT}".strip()
 
     if args.split == "holdout":
         check_holdout_frozen()
@@ -176,10 +184,10 @@ def main() -> None:
             )
         cases = load_cases(HOLDOUT_PATH)
     else:
-        cases = load_cases(ROOT / "cases" / "dev.jsonl")
+        cases = load_cases(ROOT / "cases" / f"{args.split}.jsonl")
         stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
         label = prompt_path.stem if args.prompt else f"v{cfg['version']}"
-        out_path = RESULTS_DIR / f"dev-{label}-{stamp}.json"
+        out_path = RESULTS_DIR / f"{args.split}-{label}-{stamp}.json"
 
     jobs = []
     for case in cases:

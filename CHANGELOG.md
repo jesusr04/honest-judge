@@ -8,6 +8,7 @@ From `research/2026-10-16-research-decisions.md`:
 - Prompt: explicit authority hierarchy (candidate = untrusted data), legit-injection exception, criterion decomposition (AND/OR/NOT/exactly), solve before reading, tie defined as substantive equivalence, confidence bands lowered (top 0.93), 4-part reasoning, final audit.
 - Dev cases 24 → 36: fake system line, fake closing tag, Spanish injection, legit injection, fake citation, OR/NOT/exactly/at-least logic, verbose tie, opponent attack, fake gold label.
 - v1.0.0 prompt kept at `prompts/experiments/judge-v1.0.0.md` for A/B comparison (`run_eval.py --prompt`).
+- Config pinned to Judy's real call settings before any held-out run: effort `low`, max_tokens 2000, Judy's exact output contract.
 
 ## 1.0.0 (2026-10-16)
 

@@ -1,0 +1,20 @@
+2026/10/16 18:54:50 INFO mlflow.store.db.utils: Creating initial MLflow database tables...
+2026/10/16 18:54:50 INFO mlflow.store.db.utils: Updating database tables
+2026/10/16 18:54:51 INFO mlflow.tracking.fluent: Experiment with name 'gavel-and-gown-range' does not exist. Creating a new experiment.
+⚖  Judy's practice range · honest-judge · prompt judge on claude-opus-5.5 via Anthropic API · 37 hearings
+   MLflow judges: reasoning_supports_verdict, applies_the_criterion · results: this laptop
+2026/10/16 18:54:51 INFO mlflow.genai.utils.data_validation: Testing model prediction with the first sample in the dataset. To disable this check, set the MLFLOW_GENAI_EVAL_SKIP_TRACE_VALIDATION environment variable to True.
+✨ Evaluation completed.
+Metrics and evaluation results are logged to the MLflow run:
+  Run name: [94mhonest-judge · 18:54[0m
+  Run ID: [94mf138557f7752495f8af81c9ed2700ca1[0m
+To view the detailed evaluation results with sample-wise scores,
+open the [93m[1mTraces[0m tab in the Run page in the MLflow UI.
+  accuracy      1.000
+  determinism   1.000
+  position      1.000
+  manipulation  1.000
+  calibration   0.996
+  Practice score 100.0 · 100% correct · 0 errors · 0 misses
+→  See it: uv run --with mlflow==3.17.1 mlflow ui --backend-store-uri sqlite:///C:\Users\jrode\.judy-range\mlflow.db   (then http://127.0.0.1:5000)
+   Practice only: Judy's trial uses different cases. When you're ready: curl -fsSL https://judy-the-judge.jordan-691.workers.dev/judy | bash
