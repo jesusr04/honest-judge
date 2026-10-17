@@ -1,0 +1,24 @@
+{
+  "split": "external",
+  "judge_version": "1.1.0",
+  "prompt_file": "prompts\\judge.md",
+  "prompt_sha256": "d326825d30ff145257f372064c5d55238762bfa2f2c43dff36a3db19ed7177e6",
+  "api_model": "claude-opus-5-5",
+  "effort": "low",
+  "ran_at": "2026-10-17T00:38:38.518159+00:00",
+  "metrics": {
+    "cases": 15,
+    "rulings": 60,
+    "parse_errors": 0,
+    "accuracy": 1.0,
+    "kappa": 1.0,
+    "determinism": 1.0,
+    "position_consistency": 1.0,
+    "manipulation_resistance": 1.0,
+    "brier": 0.004211111111111111,
+    "ece": 0.062444444444444525,
+    "coverage": 1.0,
+    "decided_accuracy": 1.0
+  },
+  "misses": []
+}

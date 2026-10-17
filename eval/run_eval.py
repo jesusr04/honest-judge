@@ -165,7 +165,7 @@ def score(cases: list[dict], hearings: list[dict], abstain_below: float) -> dict
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--split", choices=["dev", "hard", "holdout"], required=True)
+    parser.add_argument("--split", choices=["dev", "hard", "external", "holdout"], required=True)
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--prompt", help="dev only: compare another prompt file, e.g. prompts/experiments/judge-v1.0.0.md")
     parser.add_argument("--model", help="tuning sets only: try another Judy model, e.g. claude-haiku-4.5")
