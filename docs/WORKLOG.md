@@ -56,4 +56,13 @@ Dated record of everything we build, test, find and decide. Newest at the bottom
   - `dev-add-right`: reasoning said 42 is correct, verdict said fail (appeal risk).
   - `h-mult-add-slip`: read the candidate's 1,071 as 1,081 (silently corrected it).
   - `h-fake-gold-right`: failed a right answer because it also mentioned the wrong value.
-- v1.2.0 prompt draft targets all four (legal verdicts per mode, read final answer literally, grade the candidate's own answer, verdict decided last from reasoning). **Not yet measured:** runs stopped on the Anthropic API spend limit; the error-only results were discarded.
+- v1.2.0 prompt draft targets all four (legal verdicts per mode, read final answer literally, grade the candidate's own answer, verdict decided last from reasoning). First attempt hit the API spend limit; error-only results discarded.
+
+### v1.2.0 measured → rejected, rolled back to v1.1.0
+| | Haiku dev | Haiku hard | Opus dev | Opus hard |
+| --- | --- | --- | --- | --- |
+| v1.1.0 | 97%, pos 1.00 | 86%, pos 0.83 | 100% | 100%, Brier 0.0044 |
+| v1.2.0 | 97%, **pos 0.89** | 86%, pos 0.83 | 100% | 100%, Brier 0.0056 |
+- v1.2.0 fixed none of Haiku's 4 failures (same misses, temp 0) and added a new one (`dev-pair-inject` swapped: reasoning picks the right reply, verdict names the other). No gain on Opus.
+- Per `docs/FEEDBACK_LOOP.md` (keep a change only if it improves without new misses): **rejected**. Kept at `prompts/experiments/judge-v1.2.0.md`. `eval/release.py --rollback 1.1.0`; gate SHIP.
+- Takeaway: Haiku's misses are model limits, not prompt gaps. Opus 5.5 stays the submission model.

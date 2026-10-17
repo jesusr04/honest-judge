@@ -2,6 +2,10 @@
 
 Judge versions (prompt + model + effort, pinned in `judge.config.json`). Released prompts are frozen in `prompts/releases/`.
 
+## Rollback to 1.1.0 (2026-10-16)
+
+- 1.2.0 (literal final-answer reading, legal verdict per mode, verdict decided last) was measured and rejected: no gain on Opus, a new position miss on Haiku. Kept at `prompts/experiments/judge-v1.2.0.md`. Never released.
+
 ## 1.1.0 (2026-10-16)
 
 From `research/2026-10-16-research-decisions.md`:
