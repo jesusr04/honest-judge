@@ -12,16 +12,16 @@ Evidence: criteria/RUBRIC.md, prompts/judge.md, CHANGELOG.md, judge.config.json
 ## Known answers
 What labelled cases do you check your judge against, and how were they labelled?
 
-48 labelled cases: 36 dev (`cases/dev.jsonl`) and 12 frozen held-out (`cases/holdout.jsonl`), pointwise and pairwise, with both pass and fail outcomes and every pairwise verdict including ties. Each case is right or wrong by construction (arithmetic, well-known facts, literal counts), records why in a `why` field, and is tagged by failure mode: near-miss, literal, partial, injection, authority, long-wrong, tie. Injection cases come in pairs (a planted note on a wrong answer and on a right answer). Labelling and dispute process: `cases/LABELING.md`; review log: `cases/REVIEW.md`.
+85 labelled cases: 36 dev (`cases/dev.jsonl`), 22 hard (`cases/hard.jsonl`), 15 written by a different model to cut shared blind spots (`cases/external.jsonl`) and 12 frozen held-out (`cases/holdout.jsonl`), pointwise and pairwise, with both pass and fail outcomes and every pairwise verdict including ties. Each case is right or wrong by construction (arithmetic, well-known facts, literal counts), records why in a `why` field, and is tagged by failure mode: near-miss, literal, partial, injection, authority, long-wrong, tie. Injection cases come in pairs (a planted note on a wrong answer and on a right answer). Labelling and dispute process: `cases/LABELING.md`; review log: `cases/REVIEW.md`.
 
-Evidence: cases/dev.jsonl, cases/holdout.jsonl, cases/LABELING.md, cases/REVIEW.md
+Evidence: cases/dev.jsonl, cases/hard.jsonl, cases/external.jsonl, cases/holdout.jsonl, cases/LABELING.md, cases/REVIEW.md
 
 ## Measurement
 How do you measure whether your judge is right, and on what data?
 
-`eval/run_eval.py` runs the judge exactly as Judy calls it (labels stripped, case sent as JSON) and computes Cohen's kappa (chance-corrected, not raw accuracy), accuracy, Brier score and ECE for calibration, coverage and accuracy above the confidence cutoff. Tuning uses the dev set only; the held-out set is scored once per version to confirm. Results are written to `results/`.
+`eval/run_eval.py` runs the judge exactly as Judy calls it (labels stripped, case sent as JSON) and computes Cohen's kappa (chance-corrected, not raw accuracy), accuracy, Brier score and ECE for calibration, coverage and accuracy above the confidence cutoff. The eval calls the judge exactly as Judy does (same output contract, effort, token cap and JSON parsing, copied from the organizer's range.py). Tuning uses dev/hard/external; the held-out set is scored once per version. To check the tests themselves aren't too easy, we run them on a weaker model: Haiku 4.5 drops to 86% on the hard set while Opus 5.5 stays at 100%. We also ran the organizer's practice range (100). Results are in `results/`.
 
-Evidence: eval/run_eval.py, results/, cases/holdout.sha256
+Evidence: eval/run_eval.py, results/, cases/holdout.sha256, docs/WORKLOG.md
 
 ## Robustness
 What do you do to catch inconsistency, position bias and manipulation?
@@ -40,9 +40,9 @@ Evidence: decision_rules.json, eval/gate.py, docs/DECISION_RULES.md
 ## Feedback loop
 How do disagreements and mistakes flow back into your judge?
 
-Every miss and undecided ruling is appended automatically to `feedback/disagreements.jsonl` with the judge version it challenged. Each is resolved as label-wrong, judge-wrong (becomes a new labelled dev case and, if needed, a rubric change) or ambiguous (rubric gets an explicit check). One change per version. The held-out set is frozen by hash and can only be scored once per version, so it is never used for tuning.
+Every miss and undecided ruling is appended automatically to `feedback/disagreements.jsonl` with the judge version it challenged. Each is resolved as label-wrong, judge-wrong (becomes a new labelled dev case and, if needed, a rubric change) or ambiguous (rubric gets an explicit check). One change per version. The held-out set is frozen by hash and can only be scored once per version, so it is never used for tuning. Example: Haiku misses became prompt v1.2.0; measured, it fixed nothing and added a miss, so it was rejected and rolled back (`CHANGELOG.md`, `docs/WORKLOG.md`).
 
-Evidence: docs/FEEDBACK_LOOP.md, feedback/disagreements.jsonl, eval/run_eval.py, cases/holdout.sha256
+Evidence: docs/FEEDBACK_LOOP.md, feedback/disagreements.jsonl, eval/run_eval.py, cases/holdout.sha256, CHANGELOG.md, docs/WORKLOG.md
 
 ## Operations
 How is your judge versioned, released, logged and rolled back?
