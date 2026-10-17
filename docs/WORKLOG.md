@@ -78,3 +78,4 @@ Dated record of everything we build, test, find and decide. Newest at the bottom
 ### Submitted to Judy
 - Filed v1.1.0 as a prompt judge on `claude-opus-5.5` at commit 5c6d420, with Loom walkthrough. Trial `t-9xckbmcdxf` called, audit `s-x4ydxfqnm7` queued.
 - Court code kept in `.git/judy-code` (never committed); `.judy` holds only team, Loom, prompt file and model.
+- Judy's audit failed after 4 retries on the organizer side: `AiGatewayError 2052: Insufficient unified billing balance` (their AI gateway at $0.01). Trial never started. Loom confirmed public, downloads on, transcript ready. Waiting on organizers to top up, then re-submit with `--force`.
