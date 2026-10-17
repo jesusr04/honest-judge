@@ -74,3 +74,7 @@ Dated record of everything we build, test, find and decide. Newest at the bottom
 
 ### Label review
 - Jesus Rodriguez reviewed all four case sets (dev 36, hard 22, external 15, holdout 12) by hand: no label changes. Logged in `cases/REVIEW.md`.
+
+### Submitted to Judy
+- Filed v1.1.0 as a prompt judge on `claude-opus-5.5` at commit 5c6d420, with Loom walkthrough. Trial `t-9xckbmcdxf` called, audit `s-x4ydxfqnm7` queued.
+- Court code kept in `.git/judy-code` (never committed); `.judy` holds only team, Loom, prompt file and model.

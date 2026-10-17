@@ -1,0 +1,5 @@
+# Judy the Judge (https://judy-the-judge.jordan-691.workers.dev/judy). Safe to commit: no secrets here.
+JUDY_TEAM="honest-judge"
+JUDY_LOOM=https://www.loom.com/share/e7b8883c458e444890e3e936e702a6f8
+JUDY_PROMPT_FILE=prompts/judge.md
+JUDY_MODEL=claude-opus-5.5
