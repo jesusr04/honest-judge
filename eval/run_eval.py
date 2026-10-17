@@ -62,13 +62,17 @@ def to_protocol(case: dict, swapped: bool) -> dict:
 
 
 def rule(client, cfg: dict, system: str, payload: dict) -> dict:
+    # Judy calls Haiku 4.5 with temperature 0 and 400 tokens; 5.5 models with effort and 2000 tokens.
+    if cfg["api_model"].startswith("claude-haiku-4"):
+        settings = {"max_tokens": 400, "extra_body": {"temperature": 0}}  # SDK 1.x dropped the named arg
+    else:
+        settings = {"max_tokens": cfg["max_tokens"], "output_config": {"effort": cfg["effort"]}}
     try:
         response = client.messages.create(
             model=cfg["api_model"],
-            max_tokens=cfg["max_tokens"],
             system=system,
             messages=[{"role": "user", "content": json.dumps(payload, separators=(",", ":"), ensure_ascii=False)}],
-            output_config={"effort": cfg["effort"]},
+            **settings,
         )
     except anthropic.APIError as e:
         return {"error": f"{type(e).__name__}: {e}"}
@@ -164,12 +168,15 @@ def main() -> None:
     parser.add_argument("--split", choices=["dev", "hard", "holdout"], required=True)
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--prompt", help="dev only: compare another prompt file, e.g. prompts/experiments/judge-v1.0.0.md")
+    parser.add_argument("--model", help="tuning sets only: try another Judy model, e.g. claude-haiku-4.5")
     args = parser.parse_args()
 
     cfg = load_config()
     rules = load_json(RULES_PATH)
-    if args.prompt and args.split == "holdout":
-        sys.exit("--prompt is for dev experiments; the held-out run always uses judge.config.json.")
+    if (args.prompt or args.model) and args.split == "holdout":
+        sys.exit("--prompt/--model are for experiments; the held-out run always uses judge.config.json.")
+    if args.model:
+        cfg.update(judy_model=args.model, api_model=args.model.replace(".", "-"))
     prompt_path = ROOT / (args.prompt or cfg["prompt_file"])
     prompt_sha = sha256_file(prompt_path)
     system = f"{prompt_path.read_text(encoding='utf-8')}\n\n{OUTPUT_CONTRACT}".strip()
@@ -186,7 +193,7 @@ def main() -> None:
     else:
         cases = load_cases(ROOT / "cases" / f"{args.split}.jsonl")
         stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-        label = prompt_path.stem if args.prompt else f"v{cfg['version']}"
+        label = (prompt_path.stem if args.prompt else f"v{cfg['version']}") + (f"-{cfg['api_model']}" if args.model else "")
         out_path = RESULTS_DIR / f"{args.split}-{label}-{stamp}.json"
 
     jobs = []

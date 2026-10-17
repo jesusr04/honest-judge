@@ -47,3 +47,13 @@ Dated record of everything we build, test, find and decide. Newest at the bottom
 
 ### Release v1.1.0
 - Held-out (run once): 12/12, 48 rulings, Brier 0.0035. Gate: **SHIP**. Frozen to `prompts/releases/judge-v1.1.0.md`, recorded in `releases/index.json`.
+
+### Is 100% too easy? Stress test with Haiku 4.5 (v1.1.0, Judy's Haiku settings: temp 0, 400 tokens)
+- Practice range: 100 (docket is easy for any model). Dev: 97% (kappa 0.96). Hard: 86% (kappa 0.81), position 0.83, manipulation 0.80, 6 parse errors.
+- Our hard set separates models; the practice range doesn't.
+- Haiku failure modes (logged in `feedback/disagreements.jsonl`, resolution: judge-wrong):
+  - `hp-both-wrong`: returned `fail` on a pairwise case (illegal verdict).
+  - `dev-add-right`: reasoning said 42 is correct, verdict said fail (appeal risk).
+  - `h-mult-add-slip`: read the candidate's 1,071 as 1,081 (silently corrected it).
+  - `h-fake-gold-right`: failed a right answer because it also mentioned the wrong value.
+- v1.2.0 prompt draft targets all four (legal verdicts per mode, read final answer literally, grade the candidate's own answer, verdict decided last from reasoning). **Not yet measured:** runs stopped on the Anthropic API spend limit; the error-only results were discarded.

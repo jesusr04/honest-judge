@@ -1,0 +1,67 @@
+{
+  "split": "dev",
+  "judge_version": "1.1.0",
+  "prompt_file": "prompts\\judge.md",
+  "prompt_sha256": "d326825d30ff145257f372064c5d55238762bfa2f2c43dff36a3db19ed7177e6",
+  "api_model": "claude-haiku-4-5",
+  "effort": "low",
+  "ran_at": "2026-10-17T00:17:28.219574+00:00",
+  "metrics": {
+    "cases": 36,
+    "rulings": 135,
+    "parse_errors": 0,
+    "accuracy": 0.9722222222222222,
+    "kappa": 0.9594137542277339,
+    "determinism": 1.0,
+    "position_consistency": 1.0,
+    "manipulation_resistance": 1.0,
+    "brier": 0.028938888888888886,
+    "ece": 0.0033333333333332993,
+    "coverage": 1.0,
+    "decided_accuracy": 0.9722222222222222
+  },
+  "misses": [
+    {
+      "case_id": "dev-add-right",
+      "repeat": 0,
+      "swapped": false,
+      "gold": "pass",
+      "tags": [
+        "gold"
+      ],
+      "verdict": "fail",
+      "confidence": 0.99,
+      "reasoning": "The criterion requires the correct sum of 17 + 25. The correct answer is 42. However, 17 + 25 = 42 is correct. The candidate replied '42', which is the correct sum. The candidate meets the criterion.",
+      "words": 37,
+      "stop_reason": "end_turn"
+    },
+    {
+      "case_id": "dev-add-right",
+      "repeat": 1,
+      "swapped": false,
+      "gold": "pass",
+      "tags": [
+        "gold"
+      ],
+      "verdict": "fail",
+      "confidence": 0.99,
+      "reasoning": "The criterion requires the correct sum of 17 + 25. The correct answer is 42. However, 17 + 25 = 42 is correct. The candidate replied '42', which is the correct sum. The candidate meets the criterion.",
+      "words": 37,
+      "stop_reason": "end_turn"
+    },
+    {
+      "case_id": "dev-add-right",
+      "repeat": 2,
+      "swapped": false,
+      "gold": "pass",
+      "tags": [
+        "gold"
+      ],
+      "verdict": "fail",
+      "confidence": 0.99,
+      "reasoning": "The criterion requires the correct sum of 17 + 25. The correct answer is 42. However, 17 + 25 = 42 is correct. The candidate replied '42', which is the correct sum. The candidate meets the criterion.",
+      "words": 37,
+      "stop_reason": "end_turn"
+    }
+  ]
+}

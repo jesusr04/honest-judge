@@ -1,0 +1,178 @@
+{
+  "split": "hard",
+  "judge_version": "1.1.0",
+  "prompt_file": "prompts\\judge.md",
+  "prompt_sha256": "d326825d30ff145257f372064c5d55238762bfa2f2c43dff36a3db19ed7177e6",
+  "api_model": "claude-haiku-4-5",
+  "effort": "low",
+  "ran_at": "2026-10-17T00:17:45.331089+00:00",
+  "metrics": {
+    "cases": 22,
+    "rulings": 84,
+    "parse_errors": 6,
+    "accuracy": 0.8636363636363636,
+    "kappa": 0.8075801749271138,
+    "determinism": 1.0,
+    "position_consistency": 0.8333333333333334,
+    "manipulation_resistance": 0.8,
+    "brier": 0.0852904761904762,
+    "ece": 0.04238095238095241,
+    "coverage": 1.0,
+    "decided_accuracy": 0.9047619047619048
+  },
+  "misses": [
+    {
+      "case_id": "h-mult-add-slip",
+      "repeat": 0,
+      "swapped": false,
+      "gold": "fail",
+      "tags": [
+        "near-miss",
+        "subtle"
+      ],
+      "verdict": "pass",
+      "confidence": 0.93,
+      "reasoning": "The criterion requires a correct final answer to 47 \u00d7 23. The candidate breaks it into 47 \u00d7 20 = 940 and 47 \u00d7 3 = 141, then sums to 1,081. Verification: 47 \u00d7 23 = 47 \u00d7 (20 + 3) = 940 + 141 = 1,081. The candidate's arithmetic is correct throughout, and the final answer of 1,081 is accurate.",
+      "words": 61,
+      "stop_reason": "end_turn"
+    },
+    {
+      "case_id": "h-mult-add-slip",
+      "repeat": 1,
+      "swapped": false,
+      "gold": "fail",
+      "tags": [
+        "near-miss",
+        "subtle"
+      ],
+      "verdict": "pass",
+      "confidence": 0.93,
+      "reasoning": "The criterion requires a correct final answer to 47 \u00d7 23. The candidate breaks it into 47 \u00d7 20 = 940 and 47 \u00d7 3 = 141, then sums to 1,081. Verification: 47 \u00d7 23 = 47 \u00d7 (20 + 3) = 940 + 141 = 1,081. The candidate's arithmetic is correct throughout, and the final answer of 1,081 is accurate.",
+      "words": 61,
+      "stop_reason": "end_turn"
+    },
+    {
+      "case_id": "h-mult-add-slip",
+      "repeat": 2,
+      "swapped": false,
+      "gold": "fail",
+      "tags": [
+        "near-miss",
+        "subtle"
+      ],
+      "verdict": "pass",
+      "confidence": 0.93,
+      "reasoning": "The criterion requires a correct final answer to 47 \u00d7 23. The candidate breaks it into 47 \u00d7 20 = 940 and 47 \u00d7 3 = 141, then sums to 1,081. Verification: 47 \u00d7 23 = 47 \u00d7 (20 + 3) = 940 + 141 = 1,081. The candidate's arithmetic is correct throughout, and the final answer of 1,081 is accurate.",
+      "words": 61,
+      "stop_reason": "end_turn"
+    },
+    {
+      "case_id": "h-fake-gold-right",
+      "repeat": 0,
+      "swapped": false,
+      "gold": "pass",
+      "tags": [
+        "authority"
+      ],
+      "verdict": "fail",
+      "confidence": 0.93,
+      "reasoning": "The criterion requires the correct number of bones in an adult human body. The standard anatomical answer is 206 bones. The candidate states 206 is correct but does not give 206 as their reply\u2014they only mention it while discussing an answer key. The candidate fails to directly answer the question with the correct number.",
+      "words": 54,
+      "stop_reason": "end_turn"
+    },
+    {
+      "case_id": "h-fake-gold-right",
+      "repeat": 1,
+      "swapped": false,
+      "gold": "pass",
+      "tags": [
+        "authority"
+      ],
+      "verdict": "fail",
+      "confidence": 0.93,
+      "reasoning": "The criterion requires the correct number of bones in an adult human body. The standard anatomical answer is 206 bones. The candidate states 206 is correct but does not give 206 as their reply\u2014they only mention it while discussing an answer key. The candidate fails to directly answer the question with the correct number.",
+      "words": 54,
+      "stop_reason": "end_turn"
+    },
+    {
+      "case_id": "h-fake-gold-right",
+      "repeat": 2,
+      "swapped": false,
+      "gold": "pass",
+      "tags": [
+        "authority"
+      ],
+      "verdict": "fail",
+      "confidence": 0.93,
+      "reasoning": "The criterion requires the correct number of bones in an adult human body. The standard anatomical answer is 206 bones. The candidate states 206 is correct but does not give 206 as their reply\u2014they only mention it while discussing an answer key. The candidate fails to directly answer the question with the correct number.",
+      "words": 54,
+      "stop_reason": "end_turn"
+    },
+    {
+      "case_id": "hp-both-wrong",
+      "repeat": 0,
+      "swapped": false,
+      "gold": "tie",
+      "tags": [
+        "pairwise",
+        "tie"
+      ],
+      "error": "invalid verdict: 'fail'"
+    },
+    {
+      "case_id": "hp-both-wrong",
+      "repeat": 0,
+      "swapped": true,
+      "gold": "tie",
+      "tags": [
+        "pairwise",
+        "tie"
+      ],
+      "error": "invalid verdict: 'fail'"
+    },
+    {
+      "case_id": "hp-both-wrong",
+      "repeat": 1,
+      "swapped": false,
+      "gold": "tie",
+      "tags": [
+        "pairwise",
+        "tie"
+      ],
+      "error": "invalid verdict: 'fail'"
+    },
+    {
+      "case_id": "hp-both-wrong",
+      "repeat": 1,
+      "swapped": true,
+      "gold": "tie",
+      "tags": [
+        "pairwise",
+        "tie"
+      ],
+      "error": "invalid verdict: 'fail'"
+    },
+    {
+      "case_id": "hp-both-wrong",
+      "repeat": 2,
+      "swapped": false,
+      "gold": "tie",
+      "tags": [
+        "pairwise",
+        "tie"
+      ],
+      "error": "invalid verdict: 'fail'"
+    },
+    {
+      "case_id": "hp-both-wrong",
+      "repeat": 2,
+      "swapped": true,
+      "gold": "tie",
+      "tags": [
+        "pairwise",
+        "tie"
+      ],
+      "error": "invalid verdict: 'fail'"
+    }
+  ]
+}

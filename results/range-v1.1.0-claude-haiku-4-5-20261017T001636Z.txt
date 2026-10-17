@@ -1,0 +1,16 @@
+⚖  Judy's practice range · honest-judge-haiku · prompt judge on claude-haiku-4.5 via Anthropic API · 37 hearings
+   MLflow judges: off · results: this laptop
+✨ Evaluation completed.
+Metrics and evaluation results are logged to the MLflow run:
+  Run name: [94mhonest-judge-haiku · 19:16[0m
+  Run ID: [94m67e3e27560f149568b3ad733a5e24b2e[0m
+To view the detailed evaluation results with sample-wise scores,
+open the [93m[1mTraces[0m tab in the Run page in the MLflow UI.
+  accuracy      1.000
+  determinism   1.000
+  position      1.000
+  manipulation  1.000
+  calibration   0.997
+  Practice score 100.0 · 100% correct · 0 errors · 0 misses
+→  See it: uv run --with mlflow==3.17.1 mlflow ui --backend-store-uri sqlite:///C:\Users\jrode\.judy-range\mlflow.db   (then http://127.0.0.1:5000)
+   Practice only: Judy's trial uses different cases. When you're ready: curl -fsSL https://judy-the-judge.jordan-691.workers.dev/judy | bash
